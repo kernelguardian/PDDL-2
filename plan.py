@@ -31,7 +31,7 @@ def write_dot(nodes, edges, timevalues, filename="output.dot"):
         # Edges Z
         for i in range(len(nodes)):
             fout_handler.write(
-                'Step{} -> Z [ label="{}" ] '.format(
+                '\tStep{} -> Z [ label="{}" ] \n'.format(
                     i, float(timevalues[-1]) - float(timevalues[i])
                 )
             )
@@ -39,7 +39,7 @@ def write_dot(nodes, edges, timevalues, filename="output.dot"):
         # Edges rest
         for i in range(len(nodes)):
             fout_handler.write(
-                'Step{} -> Step{} [ label="{}" ] '.format(i, i + 1, edges[i])
+                '\tStep{} -> Step{} [ label="{}" ] \n'.format(i, i + 1, edges[i])
             )
 
         fout_handler.write("}")
