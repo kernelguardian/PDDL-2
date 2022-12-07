@@ -1,0 +1,7 @@
+digraph plan {
+A [label="A: (action_a):0[0]"];
+B [label="B: (action_a):2[2]"];
+	A -> B [ label="5.000" ];
+	B -> A [ label="-5.000" ];
+}
+

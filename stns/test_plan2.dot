@@ -1,0 +1,18 @@
+digraph plan {
+A
+B
+C
+D
+E
+A -> B [ label="3" ];
+B -> A [ label="0" ];
+A -> C [ label="4" ];
+C -> A [ label="0" ];
+A -> D [ label="5" ];
+D -> A [ label="0" ];
+B -> C [ label="1" ];
+C -> B [ label="0" ];
+C -> D [ label="1" ];
+D -> C [ label="0" ];
+}
+

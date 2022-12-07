@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "reasoning assignment 2"
+version = "0.1.0"
+description = ""
+authors = ["Asish Binu Mathew <asishbm98@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+black = "^22.10.0"
+numpy = "^1.23.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

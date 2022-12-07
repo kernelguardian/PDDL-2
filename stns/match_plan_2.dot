@@ -1,0 +1,19 @@
+digraph plan {
+Step3 [label="Step 3: (light_match match1):2[0]"];
+Step2 [label="Step 2: (mend_fuse fuse1 match1):2[2]"];
+Step1 [label="Step 1: (mend_fuse fuse1 match1):0[2]"];
+Step0 [label="Step 0: (light_match match1):0[0]"];
+	Step0 -> Z [ label="-0.001" ];
+	Step1 -> Z [ label="-4.001" ];
+	Step2 -> Z [ label="-5.001" ];
+	Step3 -> Z [ label="-8.001" ];
+	Step1 -> Step0 [ label="0" ];
+	Step2 -> Step0 [ label="0" ];
+	Step0 -> Step3 [ label="8.000" ];
+	Step3 -> Step0 [ label="-8.000" ];
+	Step1 -> Step2 [ label="5.000" ];
+	Step2 -> Step1 [ label="-5.000" ];
+	Step3 -> Step1 [ label="0" ];
+	Step3 -> Step2 [ label="0" ];
+}
+

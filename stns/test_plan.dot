@@ -1,0 +1,12 @@
+digraph plan {
+A 
+B
+C
+D
+A -> B [ label="3" ];
+A -> A [ label="0" ];
+B -> B [ label="0" ];
+
+C->D [label="mylabel or some value"]
+}
+
