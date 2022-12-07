@@ -1,6 +1,6 @@
 import pprint
 import numpy as np
-from floyd_test import floyd_warshall
+from floyd_test import FLOYD_WARSHALL
 
 nV = 103
 pp = pprint.PrettyPrinter(width=41, compact=True)
@@ -45,5 +45,5 @@ for value in values:
 
 print(array)
 np.savetxt("foo.csv", array, delimiter=",")
-floyd_warshall(array)
+FLOYD_WARSHALL(G=array, nV=nV)
 # print(values)

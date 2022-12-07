@@ -1,40 +1,32 @@
-nV = 103
+class FLOYD_WARSHALL:
+    def __init__(self, G, nV=103) -> None:
+        self.nV = nV
+        self.INF = float("inf")
+        self.floyd_warshall(G=G)
 
-INF = float("inf")
+    def floyd_warshall(self, G):
+        distance = list(map(lambda i: list(map(lambda j: j, i)), G))
 
-
-def floyd_warshall(G):
-    distance = list(map(lambda i: list(map(lambda j: j, i)), G))
-
-    # Adding vertices individually
-
-    for i in range(nV):
-        print("running", str(i))
-        if distance[i][i] < 0:
-            return False
-        else:
-            for k in range(nV):
-                for i in range(nV):
-                    for j in range(nV):
-                        distance[i][j] = min(
-                            distance[i][j], distance[i][k] + distance[k][j]
-                        )
-
-    print_solution(distance)
-
-
-# Printing the solution
-def print_solution(distance):
-    for i in range(nV):
-        for j in range(nV):
-            if distance[i][j] == INF:
-                print("INF", end=" ")
+        # Adding vertices individually
+        for i in range(self.nV):
+            if distance[i][i] < 0:
+                return False
             else:
-                print(distance[i][j], end="  ")
-        print(" ")
+                for k in range(self.nV):
+                    for i in range(self.nV):
+                        for j in range(self.nV):
+                            distance[i][j] = min(
+                                distance[i][j], distance[i][k] + distance[k][j]
+                            )
 
+        self.print_solution(distance)
 
-# G = [[0, 3, INF, 5], [2, 0, INF, 4], [INF, 1, 0, INF], [INF, INF, 2, 0]]
-
-
-# floyd_warshall(G)
+    # Printing the solution
+    def print_solution(self, distance):
+        for i in range(self.nV):
+            for j in range(self.nV):
+                if distance[i][j] == self.INF:
+                    print("INF", end=" ")
+                else:
+                    print(distance[i][j], end="  ")
+            print(" ")
