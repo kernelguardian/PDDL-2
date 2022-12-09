@@ -6,7 +6,7 @@ import csv
 import pprint
 from pydotplus import graphviz
 from pydotplus.graphviz import Graph, Node, Edge
-
+import pydot
 
 pp = pprint.PrettyPrinter(width=41, compact=True)
 
@@ -27,6 +27,7 @@ graph = None
 # empty.
 
 distance = []
+timevalues = []
 
 
 def matrix_to_graph(matrix):
@@ -45,10 +46,10 @@ def matrix_to_graph(matrix):
 
 class FLOYD_WARSHALL:
     def __init__(self, G, nV=102) -> None:
-
         self.nV = nV
         self.INF = float("inf")
         self.distance = self.floyd_warshall(G=G)
+        print(self.nV)
 
     def floyd_warshall(self, G):
         distance = list(map(lambda i: list(map(lambda j: j, i)), G))
@@ -104,32 +105,40 @@ def write_dot(nodes, edges, timevalues, filename="output.dot"):
         fout_handler.write("digraph plan {\n")
 
         # Labels
+        my_temp_list = []
         for i in range(len(nodes)):
-            fout_handler.write('Step{} [label="Step{}: {}"]\n'.format(i, i, nodes[i]))
+            my_temp_list.append(
+                'Step{} [label="Step{}:{}"];\n'.format(i + 1, i + 1, nodes[i])
+            )
+        my_temp_list.reverse()
+        for line in my_temp_list:
+            fout_handler.write(line)
 
         # Edges Z
         for i in range(len(nodes)):
             fout_handler.write(
-                '\tStep{} -> Z [ label="{}" ] \n'.format(
-                    i, float(timevalues[-1]) - float(timevalues[i])
+                '\tZ  -> Step{}[label="[{},{}]"]; \n'.format(
+                    i + 1, 0, float(timevalues[i])
                 )
             )
 
         # Edges rest
         for i in range(len(nodes)):
             fout_handler.write(
-                '\tStep{} -> Step{} [ label="{}" ] \n'.format(i, i + 1, edges[i])
+                '\tStep{} -> Step{}[label="{},{}"]; \n'.format(
+                    i + 1, i + 2, edges[i], timevalues[i]
+                )
             )
 
         fout_handler.write("}")
 
 
 def make_stn(plan):
+    global timevalues
     #  Part 1 of assignment, parse an STN
     # Complete and then call print function
     # You should return nodes and edges in 2 lists
     nodes, edges, timevalues = load_file(plan)
-    write_dot(nodes=nodes, edges=edges, timevalues=timevalues)
 
     # print_stn(nodes, edges, graph)
 
@@ -139,7 +148,7 @@ def make_stn(plan):
 def print_stn(nodes, edges, graph):
     # Part 2, print the STN
     # Complete this
-    print("digraph {")
+    write_dot(nodes=nodes, edges=edges, timevalues=timevalues)
 
 
 def floyd_warshall(nodes, edges, graph):
@@ -184,21 +193,21 @@ def floyd_warshall(nodes, edges, graph):
 
     # Uncomment this
     # Fill up first column
-    for i in range(len(matrix)):
-        matrix[i][0] = -matrix[0][i]
+    # for i in range(len(matrix)):
+    #     matrix[i][0] = -matrix[0][i]
 
-    # Make diagonal elements zero
-    matrix = [
-        [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
-        for i in range(len(matrix))
-    ]
+    # # Make diagonal elements zero
+    # matrix = [
+    #     [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
+    #     for i in range(len(matrix))
+    # ]
 
     with open("matrix.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         for row in matrix:
             writer.writerow(row)
 
-    fw_obj = FLOYD_WARSHALL(G=matrix)
+    fw_obj = FLOYD_WARSHALL(G=matrix, nV=len(nodes) + 1)
 
     distance = fw_obj.get_distance()
     if distance is False:
@@ -218,7 +227,10 @@ def make_minimal(nodes, edges, graph):
     with open("finalgraph.dot", "w") as f:
         f.write(temp)
 
-    # Todo simplify here
+    min_graph = pydot.Dot("min_graph", graph_type="digraph", bgcolor="white")
+
+    with open("finalgraph_simplified.dot", "w") as f:
+        f.write(min_graph.to_string())
     return nodes, edges, graph
 
 
@@ -228,5 +240,8 @@ nodes, edges, graph = make_stn(
 
 print_stn(nodes, edges, graph)
 
-floyd_warshall(nodes, edges, graph)
-make_minimal(nodes, edges, graph)
+if floyd_warshall(nodes, edges, graph) is True:
+    print("consistent")
+    make_minimal(nodes, edges, graph)
+else:
+    print("exiting, can't do minimal")

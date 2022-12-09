@@ -103,6 +103,17 @@ docs = ["furo (>=2022.9.29)", "proselint (>=0.13)", "sphinx (>=5.3)", "sphinx-au
 test = ["appdirs (==1.4.4)", "pytest (>=7.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
 
 [[package]]
+name = "pydot"
+version = "1.4.2"
+description = "Python interface to Graphviz's Dot"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.dependencies]
+pyparsing = ">=2.1.4"
+
+[[package]]
 name = "pydotplus"
 version = "2.0.2"
 description = "Python interface to Graphviz's Dot language"
@@ -135,7 +146,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "9df4feb14e3f5e9cd3b51daa6602f789ecf26a7bedd632b1a12337c16664cbeb"
+content-hash = "d4b048fb49fdc14b0b58522935dababd0a7ef0234b8a1c8c43d76c8dae9a769e"
 
 [metadata.files]
 black = [
@@ -218,6 +229,10 @@ pathspec = [
 platformdirs = [
     {file = "platformdirs-2.6.0-py3-none-any.whl", hash = "sha256:1a89a12377800c81983db6be069ec068eee989748799b946cce2a6e80dcc54ca"},
     {file = "platformdirs-2.6.0.tar.gz", hash = "sha256:b46ffafa316e6b83b47489d240ce17173f123a9b9c83282141c3daf26ad9ac2e"},
+]
+pydot = [
+    {file = "pydot-1.4.2-py2.py3-none-any.whl", hash = "sha256:66c98190c65b8d2e2382a441b4c0edfdb4f4c025ef9cb9874de478fb0793a451"},
+    {file = "pydot-1.4.2.tar.gz", hash = "sha256:248081a39bcb56784deb018977e428605c1c758f10897a339fce1dd728ff007d"},
 ]
 pydotplus = [
     {file = "pydotplus-2.0.2.tar.gz", hash = "sha256:91e85e9ee9b85d2391ead7d635e3d9c7f5f44fd60a60e59b13e2403fa66505c4"},

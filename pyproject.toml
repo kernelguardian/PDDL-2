@@ -12,6 +12,7 @@ numpy = "^1.23.5"
 graphviz = "^0.20.1"
 pydotplus = "^2.0.2"
 networkx = "^2.8.8"
+pydot = "^1.4.2"
 
 
 [build-system]
