@@ -129,7 +129,7 @@ def make_stn(plan):
     # Complete and then call print function
     # You should return nodes and edges in 2 lists
     nodes, edges, timevalues = load_file(plan)
-    # write_dot(nodes=nodes, edges=edges, timevalues=timevalues)
+    write_dot(nodes=nodes, edges=edges, timevalues=timevalues)
 
     # print_stn(nodes, edges, graph)
 
@@ -183,15 +183,15 @@ def floyd_warshall(nodes, edges, graph):
         matrix[src][dest] = round(float(value[1]), 2)
 
     # Uncomment this
-    # # Fill up first column
-    # for i in range(len(matrix)):
-    #     matrix[i][0] = -matrix[0][i]
+    # Fill up first column
+    for i in range(len(matrix)):
+        matrix[i][0] = -matrix[0][i]
 
-    # # Make diagonal elements zero
-    # matrix = [
-    #     [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
-    #     for i in range(len(matrix))
-    # ]
+    # Make diagonal elements zero
+    matrix = [
+        [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
+        for i in range(len(matrix))
+    ]
 
     with open("matrix.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
