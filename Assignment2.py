@@ -32,17 +32,79 @@ distance = []
 timevalues = []
 
 
+def optimize_graph(nodes, edges, graph: Digraph):
+    nodes = graph.no()
+    edges = graph.get_edge_list()
+
+    graph_dict = {}
+
+    for n1 in nodes:
+        node_details_dict = {}
+        for e in edges:
+
+            # print(n1)
+            # print(e.get_source())
+
+            if e.get_source() == (n1.get_name()):
+                # print("Matched")
+
+                edge_value = float(e.obj_dict["attributes"]["weight"])
+                dest = e.get_destination()
+                # print(dest)
+                # print(edge_value)
+                node_details_dict[dest] = edge_value
+
+        graph_dict[n1.get_name()] = node_details_dict
+
+    for n in nodes:
+        for n1 in nodes:
+            for n2 in nodes:
+                x = n.get_name()
+                x1 = n1.get_name()
+                x2 = n2.get_name()
+                if (x != '"\\n"') and (x1 != '"\\n"') and (x2 != '"\\n"'):
+                    if (x1 != x2) and (x1 != x) and (x2 != x):
+                        try:
+                            if abs(graph_dict[x1][x2]) == (
+                                abs(graph_dict[x1][x]) + abs(graph_dict[x][x2])
+                            ):
+                                if (graph_dict[x][x2] >= 0) and (
+                                    graph_dict[x1][x2] >= 0
+                                ):
+                                    graph_dict[x1].pop(x2)
+                                if (graph_dict[x1][x] < 0) and (graph_dict[x1][x2] < 0):
+                                    graph_dict[x1].pop(x2)
+                        except KeyError as e:
+                            #                  print(str("The node "+str(e)+" is disconnected"))
+                            pass
+
+    min_graph = pydot.Dot("min_graph", graph_type="digraph", bgcolor="white")
+
+    for dict_node in graph_dict:
+        min_graph.add_node(pydot.Node(dict_node, shape="circle"))
+
+    for dict_key, dict_value in graph_dict.items():
+        for dict_value_key, dict_value_value in dict_value.items():
+            min_graph.add_edge(
+                pydot.Edge(
+                    dict_key, dict_value_key, color="blue", label=dict_value_value
+                )
+            )
+
+    return min_graph
+
+
 def matrix_to_graph(matrix):
-    graph = Digraph()
+    graph = Graph()
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             if matrix[i][j] != inf:
                 node_i = Node(str(i))
                 node_j = Node(str(j))
-                graph.node(str(i))
-                graph.node(str(j))
-                # edge = Edge(str(i), str(j), label=str(matrix[i][j]))
-                graph.edge(str(i), str(j), label=str(matrix[i][j]))
+                graph.add_node(node_i)
+                graph.add_node(node_j)
+                edge = Edge(node_i, node_j, label=str(matrix[i][j]))
+                graph.add_edge(edge)
     return graph
 
 
@@ -228,11 +290,17 @@ def make_minimal(nodes, edges, graph):
     # Make minimal graph
     # Return nodes and edges
     final_graph = matrix_to_graph(distance)
-    final_graph.save("finalgraph.dot")
+    temp = final_graph.to_string()
 
-    min_graph = final_graph.simplify()
+    with open("finalgraph.dot", "w") as f:
+        f.write(temp)
 
+    min_graph = optimize_graph(nodes, edges, final_graph)
     min_graph.save("finalgraph_simplified.dot")
+
+    # min_graph = final_graph.simplify()
+
+    # min_graph.save("finalgraph_simplified.dot")
 
     return nodes, edges, graph
 
