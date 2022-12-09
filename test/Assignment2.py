@@ -69,7 +69,7 @@ def optimize_graph(nodes, edges, graph):
                                 if (graph_dict[x1][x] < 0) and (graph_dict[x1][x2] < 0):
                                     graph_dict[x1].pop(x2)
                         except KeyError as e:
-                            print(str("The node " + str(e) + " is disconnected"))
+                            # print(str("The node " + str(e) + " is disconnected"))
                             pass
     min_graph = pydot.Dot("min_graph", graph_type="digraph", bgcolor="white")
 
@@ -106,7 +106,7 @@ class FLOYD_WARSHALL:
         self.nV = nV
         self.INF = float("inf")
         self.distance = self.floyd_warshall(G=G)
-        print(self.nV)
+        print("Matrix Size", self.nV)
 
     def floyd_warshall(self, G):
         distance = list(map(lambda i: list(map(lambda j: j, i)), G))
@@ -207,6 +207,7 @@ def print_stn(nodes, edges, graph):
     # Part 2, print the STN
     # Complete this
     write_dot(nodes=nodes, edges=edges, timevalues=timevalues)
+    
 
 
 def floyd_warshall(nodes, edges, graph):
@@ -301,7 +302,7 @@ nodes, edges, graph = make_stn("plan.pddl")
 print_stn(nodes, edges, graph)
 
 if floyd_warshall(nodes, edges, graph) is True:
-    print("consistent")
+    print("Consistent")
     make_minimal(nodes, edges, graph)
 else:
     print("Inconsistent")
