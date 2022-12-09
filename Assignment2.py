@@ -32,8 +32,11 @@ distance = []
 timevalues = []
 
 
-def optimize_graph(nodes, edges, graph: Digraph):
-    nodes = graph.no()
+def optimize_graph(nodes, edges, graph):
+    nx_matrix = np.array(distance)
+    nxgraph = nx.from_numpy_matrix(nx_matrix, create_using=nx.DiGraph)
+    graph = nx.nx_pydot.to_pydot(nxgraph)
+    nodes = graph.get_node_list()
     edges = graph.get_edge_list()
 
     graph_dict = {}
@@ -47,7 +50,7 @@ def optimize_graph(nodes, edges, graph: Digraph):
 
             if e.get_source() == (n1.get_name()):
                 # print("Matched")
-
+                # print(e.obj_dict)
                 edge_value = float(e.obj_dict["attributes"]["weight"])
                 dest = e.get_destination()
                 # print(dest)
@@ -75,9 +78,8 @@ def optimize_graph(nodes, edges, graph: Digraph):
                                 if (graph_dict[x1][x] < 0) and (graph_dict[x1][x2] < 0):
                                     graph_dict[x1].pop(x2)
                         except KeyError as e:
-                            #                  print(str("The node "+str(e)+" is disconnected"))
+                            print(str("The node " + str(e) + " is disconnected"))
                             pass
-
     min_graph = pydot.Dot("min_graph", graph_type="digraph", bgcolor="white")
 
     for dict_node in graph_dict:
@@ -296,17 +298,16 @@ def make_minimal(nodes, edges, graph):
         f.write(temp)
 
     min_graph = optimize_graph(nodes, edges, final_graph)
-    min_graph.save("finalgraph_simplified.dot")
+    temp = min_graph.to_string()
 
-    # min_graph = final_graph.simplify()
-
-    # min_graph.save("finalgraph_simplified.dot")
+    with open("finalgraph_simplified.dot", "w") as f:
+        f.write(temp)
 
     return nodes, edges, graph
 
 
 nodes, edges, graph = make_stn(
-    "/Users/fluffyunicorn/Desktop/Uni/Semester 1/Reasoning Assignment 2/temporalplan.pddl"
+    "/Users/fluffyunicorn/Desktop/Uni/Semester 1/Reasoning Assignment 2/testplan.pddl"
 )
 
 print_stn(nodes, edges, graph)
