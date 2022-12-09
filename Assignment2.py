@@ -229,15 +229,11 @@ def make_minimal(nodes, edges, graph):
     # Return nodes and edges
     final_graph = matrix_to_graph(distance)
     final_graph.save("finalgraph.dot")
-    # temp = final_graph.to_string()
 
-    # with open("finalgraph.dot", "w") as f:
-    #     f.write(temp)
+    min_graph = final_graph.simplify()
 
-    min_graph = pydot.Dot("min_graph", graph_type="graph", bgcolor="white")
+    min_graph.save("finalgraph_simplified.dot")
 
-    with open("finalgraph_simplified.dot", "w") as f:
-        f.write(min_graph.to_string())
     return nodes, edges, graph
 
 
