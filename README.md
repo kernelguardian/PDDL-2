@@ -1,5 +1,14 @@
 # Assignment 2
 
+Run Assignment2.py file
+```bash
+python Assignment2.py
+```
+
+\
+////////\\\\\\ \
+////////\\\\\\\\\\\\\\\\
+# (Depreceated)
 1. Run plan.py file
 ```bash
 python plan.py
