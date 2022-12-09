@@ -188,6 +188,9 @@ def write_dot(nodes, edges, timevalues, filename="output.dot"):
         fout_handler.write("}")
 
 
+# ===========================================
+
+
 def make_stn(plan):
     global timevalues
     #  Part 1 of assignment, parse an STN
@@ -217,15 +220,15 @@ def floyd_warshall(nodes, edges, graph):
     edges = dot.get_edge_list()
     nodes = dot.get_node_list()
 
-    # Gimmick code
-    MATRIX_SIZE = (
-        int(
-            raw_dot[raw_dot.find("{\nStep") + 2 : raw_dot.find("[label")].removeprefix(
-                "Step"
-            )
-        )
-        + 2
-    )
+    # # Gimmick code
+    # MATRIX_SIZE = (
+    #     int(
+    #         raw_dot[raw_dot.find("{\nStep") + 2 : raw_dot.find("[label")].removeprefix(
+    #             "Step"
+    #         )
+    #     )
+    #     + 2
+    # )
 
     MATRIX_SIZE = len(nodes) + 2
 
@@ -293,9 +296,7 @@ def make_minimal(nodes, edges, graph):
     return nodes, edges, min_graph
 
 
-nodes, edges, graph = make_stn(
-    "/Users/fluffyunicorn/Desktop/Uni/Semester 1/Reasoning Assignment 2/plan.pddl"
-)
+nodes, edges, graph = make_stn("plan.pddl")
 
 print_stn(nodes, edges, graph)
 
