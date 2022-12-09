@@ -6,7 +6,9 @@ import csv
 import pprint
 from pydotplus import graphviz
 from pydotplus.graphviz import Graph, Node, Edge
+from graphviz import Digraph
 import pydot
+import networkx as nx
 
 pp = pprint.PrettyPrinter(width=41, compact=True)
 
@@ -31,16 +33,16 @@ timevalues = []
 
 
 def matrix_to_graph(matrix):
-    graph = Graph()
+    graph = Digraph()
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             if matrix[i][j] != inf:
                 node_i = Node(str(i))
                 node_j = Node(str(j))
-                graph.add_node(node_i)
-                graph.add_node(node_j)
-                edge = Edge(node_i, node_j, label=str(matrix[i][j]))
-                graph.add_edge(edge)
+                graph.node(str(i))
+                graph.node(str(j))
+                # edge = Edge(str(i), str(j), label=str(matrix[i][j]))
+                graph.edge(str(i), str(j), label=str(matrix[i][j]))
     return graph
 
 
@@ -191,18 +193,18 @@ def floyd_warshall(nodes, edges, graph):
 
         matrix[src][dest] = round(float(value[1]), 2)
 
-    # Uncomment this
-    # Fill up first column
-    # for i in range(len(matrix)):
-    #     matrix[i][0] = -matrix[0][i]
+    # # Uncomment this
+    # # Fill up first column
+    for i in range(len(matrix)):
+        matrix[i][0] = inf
 
     # # Make diagonal elements zero
-    # matrix = [
-    #     [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
-    #     for i in range(len(matrix))
-    # ]
+    matrix = [
+        [0 if i == j else matrix[i][j] for j in range(len(matrix[i]))]
+        for i in range(len(matrix))
+    ]
 
-    with open("matrix.csv", "w", newline="") as csvfile:
+    with open("f_matrix.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         for row in matrix:
             writer.writerow(row)
@@ -214,6 +216,10 @@ def floyd_warshall(nodes, edges, graph):
         print("inconsistent")
         return False
     else:
+        with open("matrix_distance.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            for row in distance:
+                writer.writerow(row)
         return True
     # return distance
 
@@ -222,12 +228,13 @@ def make_minimal(nodes, edges, graph):
     # Make minimal graph
     # Return nodes and edges
     final_graph = matrix_to_graph(distance)
-    temp = final_graph.to_string()
+    final_graph.save("finalgraph.dot")
+    # temp = final_graph.to_string()
 
-    with open("finalgraph.dot", "w") as f:
-        f.write(temp)
+    # with open("finalgraph.dot", "w") as f:
+    #     f.write(temp)
 
-    min_graph = pydot.Dot("min_graph", graph_type="digraph", bgcolor="white")
+    min_graph = pydot.Dot("min_graph", graph_type="graph", bgcolor="white")
 
     with open("finalgraph_simplified.dot", "w") as f:
         f.write(min_graph.to_string())
