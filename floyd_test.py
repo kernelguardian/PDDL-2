@@ -1,8 +1,8 @@
 class FLOYD_WARSHALL:
-    def __init__(self, G, nV=103) -> None:
+    def __init__(self, G, nV=102) -> None:
         self.nV = nV
         self.INF = float("inf")
-        self.floyd_warshall(G=G)
+        self.distance = self.floyd_warshall(G=G)
 
     def floyd_warshall(self, G):
         distance = list(map(lambda i: list(map(lambda j: j, i)), G))
@@ -20,6 +20,7 @@ class FLOYD_WARSHALL:
                             )
 
         self.print_solution(distance)
+        return distance
 
     # Printing the solution
     def print_solution(self, distance):
@@ -30,3 +31,6 @@ class FLOYD_WARSHALL:
                 else:
                     print(distance[i][j], end="  ")
             print(" ")
+
+    def get_distance(self):
+        return self.distance
